@@ -1,0 +1,4 @@
+*.class
+except/*.class
+finput/*.class
+encodec/*.class
