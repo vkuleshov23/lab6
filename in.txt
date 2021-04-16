@@ -1,0 +1,2 @@
+Смена кодировки 
+Encoding changing

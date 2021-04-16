@@ -1,10 +1,14 @@
 package prog.lab6;
 import java.io.IOException;
 import prog.lab6.finput.*;
+import prog.lab6.encodec.*;
 import prog.lab6.excpt.*;
 public class main{
 	public static void main(String[] args){			
 		try{
+			
+			System.out.println("\n------------------------FormattedInput check------------------------\n");
+			
 			String format = "%s %f %d %c";
 			String in = "GG -1.86 -23423 s";
 			Object[] test1 = FormattedInput.sscanf(format, in);
@@ -18,8 +22,25 @@ public class main{
 			char t4 = (char)test2[3];
 			System.out.println("" + t1 + ", " + t2 + ", " + t3 + ", " + t4);
 
+			
+			System.out.println("\n------------------------EncodingConverter check------------------------\n");
+
+			if(args.length != 4){
+				System.out.println("Invalid input data");
+				return;
+			} else {
+				try{
+					EncodingConverter.converter(args[0], args[1], args[2], args[3]);
+				} catch(IOException err){
+					err.printStackTrace();
+				}
+			}
+
 		} catch(FormattedInputException err){
 			err.getMassage();
+			err.printStackTrace();
+		} catch(EncodingConverterException err){
+			err.getMSandSLT();
 			err.printStackTrace();
 		}
 	}

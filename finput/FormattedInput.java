@@ -102,6 +102,7 @@ public class FormattedInput{
 			curFormatInd = 0;
 		}
 		public boolean intChecker(String item_){
+			if(item_.length() == 0) return false;
 			for (int i = 0; i < item_.length(); i++) {
 				char c = item_.charAt(i);
 				if(!(((c >= '0') && (c <= '9')) || (c == '-'))){
@@ -115,6 +116,7 @@ public class FormattedInput{
 		}
 
 		public boolean floatChecker(String item_){
+			if(item_.length() == 0) return false;
 			int pointCounter = 0;
 			for (int i = 0; i < item_.length(); i++) {
 				char c = item_.charAt(i);
@@ -205,15 +207,6 @@ public class FormattedInput{
 		} 
 		return result;
 	}
-	public synchronized static final Object[] scanf(String format){
-		Object[] result;
-		do {
-			ERR_FLAG = false;
-			System.out.println("Please, input data: ");
-			result =  tryScanf(format);			
-		} while(ERR_FLAG == ERROR);
-		return result;
-	}
 
 	private synchronized static final Object[] trySScanf(String format, String in){
 		format = format.trim();
@@ -234,11 +227,26 @@ public class FormattedInput{
 		} 
 		return result;
 	}
+	public synchronized static final Object[] scanf(String format){
+		Object[] result;
+		do {
+			if(ERR_FLAG != ERROR)
+				System.out.print("Please, input data: ");
+			else
+				System.out.print("[Invalid data] The data is differ from the specification: " + format + "\nTry again: ");			
+			ERR_FLAG = false;
+			result =  tryScanf(format);			
+		} while(ERR_FLAG == ERROR);
+		return result;
+	}
 	public synchronized static final Object[] sscanf(String format, String in){
 		Object[] result;
 			ERR_FLAG = false;
 			result =  trySScanf(format, in);			
-			if(ERR_FLAG == ERROR) {	FormattedInputException e = new FormattedInputException("Sscanf...\nThe data is differ from the specification\nIvalid data"); throw e; }
+			if(ERR_FLAG == ERROR) {	ERR_FLAG = false;
+			 						FormattedInputException e = 
+			 						new FormattedInputException("Sscanf...\nThe data is differ from the specification\nIvalid data"); 
+			 						throw e; }
 		return result;
 	}
 }
