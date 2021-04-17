@@ -141,7 +141,13 @@ public class FormattedInput{
 			int counter = 0;
 			for (int i = 0; i < format.length(); i++) {
 				if(format.charAt(i) == '%'){
-					counter++;
+					if(i+1 != format.length()){
+						counter++;
+					} else {
+						FormattedInputException e = 
+			 			new FormattedInputException("Incorrect specification format: " + format + '\n'); 
+			 			throw e;
+					}
 				}
 			}
 			return counter;
@@ -149,7 +155,14 @@ public class FormattedInput{
 		public char nextFormat(){
 			curFormatInd = format.indexOf('%', curFormatInd);
 			if(curFormatInd != -1){
-				if(curFormatInd+1 <= format.length()){
+				if(curFormatInd+1 < format.length()){
+					if(curFormatInd+2 < format.length()){ //checking for the correctness of the variable type interpreter
+						if(!((format.charAt(curFormatInd+2) == ' ') || (format.charAt(curFormatInd+2) == '\t') || (format.charAt(curFormatInd+2) == '%'))){
+							FormattedInputException e = 
+			 				new FormattedInputException("Incorrect specification format: " + format + '\n'); 
+			 				throw e;
+			 			}
+					}
 					curFormatInd++;
 				} else {
 					return '.';
@@ -185,6 +198,10 @@ public class FormattedInput{
 						FormattedInput.ERR_FLAG = true;
 					}
 					break;
+				case '%':
+					FormattedInputException e = 
+			 		new FormattedInputException("Incorrect specification format: " + format + '\n'); 
+			 		throw e;
 			}
 			return item;
 		}

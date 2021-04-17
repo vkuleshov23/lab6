@@ -9,7 +9,7 @@ public class main{
 			
 			System.out.println("\n------------------------FormattedInput check------------------------\n");
 			
-			String format = "%s %f %d %c";
+			String format = "%s%f%ds%c";
 			String in = "GG -1.86 -23423 s";
 			Object[] test1 = FormattedInput.sscanf(format, in);
 			System.out.println("" + test1[0] + ", " + test1[1] + ", " + test1[2] + ", " + test1[3]);
