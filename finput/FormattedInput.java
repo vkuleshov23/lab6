@@ -5,6 +5,7 @@ public class FormattedInput{
 
 	private static boolean ERR_FLAG = false;
 	private static final boolean ERROR = true;
+	private static final char END = '.';
 
 	private static class Input {
 		
@@ -165,14 +166,14 @@ public class FormattedInput{
 					}
 					curFormatInd++;
 				} else {
-					return '.';
+					return END;
 				}
 				return format.charAt(curFormatInd);
 			} else {
-				return '.';
+				return END;
 			}
 		}
-		public synchronized Object formatedElement(char format_, String item_){
+		public Object formatedElement(char format_, String item_){
 			Object item = item_;
 			switch(format_){
 				case 'd':
@@ -206,7 +207,7 @@ public class FormattedInput{
 			return item;
 		}
 	}
-	private synchronized static final Object[] tryScanf(String format){
+	private static final Object[] tryScanf(String format){
 		format = format.trim();
 		Format take = new Format(format);
 		Object[] result = new Object[take.formatsCounter()];
@@ -214,7 +215,7 @@ public class FormattedInput{
 		item.input();
 		for(int i = 0; ; i++){
 			char form = take.nextFormat();
-			if(form == '.'){
+			if(form == END){
 				break;
 			} else {
 				if(item.data[i] != null){
@@ -225,16 +226,18 @@ public class FormattedInput{
 		return result;
 	}
 
-	private synchronized static final Object[] trySScanf(String format, String in){
+	private static final Object[] trySScanf(String format, String in){
 		format = format.trim();
 		in = in.trim();
+		
 		Format take = new Format(format);
 		Object[] result = new Object[take.formatsCounter()];
 		Input item = new Input(take.formatsCounter());
+
 		item.input(in);
 		for(int i = 0; ; i++){
 			char form = take.nextFormat();
-			if(form == '.'){
+			if(form == END){
 				break;
 			} else {
 				if(item.data[i] != null){
@@ -244,26 +247,27 @@ public class FormattedInput{
 		} 
 		return result;
 	}
-	public synchronized static final Object[] scanf(String format){
+	public static final Object[] scanf(String format){
 		Object[] result;
 		do {
 			if(ERR_FLAG != ERROR)
 				System.out.print("Please, input data: ");
 			else
-				System.out.print("[Invalid data] The data is differ from the specification: " + format + "\nTry again: ");			
-			ERR_FLAG = false;
+				System.out.print("[Invalid data] The data is differ from the specification: " + format + 
+								"\nTry again: ");			
+			ERR_FLAG = !ERROR;
 			result =  tryScanf(format);			
 		} while(ERR_FLAG == ERROR);
 		return result;
 	}
-	public synchronized static final Object[] sscanf(String format, String in){
+	public static final Object[] sscanf(String format, String in){
 		Object[] result;
-			ERR_FLAG = false;
-			result =  trySScanf(format, in);			
-			if(ERR_FLAG == ERROR) {	ERR_FLAG = false;
-			 						FormattedInputException e = 
-			 						new FormattedInputException("Sscanf...\nThe data is differ from the specification\nIvalid data"); 
-			 						throw e; }
+		ERR_FLAG = !ERROR;
+		result =  trySScanf(format, in);			
+		if(ERR_FLAG == ERROR) {	ERR_FLAG = false;
+		 						FormattedInputException e = 
+		 						new FormattedInputException("Sscanf...\nThe data is differ from the specification\nIvalid data"); 
+		 						throw e; }
 		return result;
 	}
 }

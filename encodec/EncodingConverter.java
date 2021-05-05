@@ -27,22 +27,26 @@ public class EncodingConverter {
 			File fileIn = new File(in);
 	        File fileOut = new File(out);
 
-	        FileInputStream inputStream = new FileInputStream(fileIn);
-	        FileOutputStream outStream  = new FileOutputStream(fileOut);
+	        try(FileInputStream inputStream = new FileInputStream(fileIn)){
 
+	        	FileOutputStream outStream  = new FileOutputStream(fileOut);
 
-	        byte[] buffer = new byte[inputStream.available()];
-	        inputStream.read(buffer);
-	        inputStream.close();
-	        if (EncodingChecker(from, to) == false){
-	        	EncodingConverterException e = new EncodingConverterException("Ivalid encoding format"); throw e; 
-	        }
-	        Charset chSetFrom = Charset.forName(from);
-	        Charset chSetTo = Charset.forName(to);
+	        	byte[] buffer = new byte[inputStream.available()];
+	        	inputStream.read(buffer);
+	        	inputStream.close();
+	        		        	
+	        	if (EncodingChecker(from, to) == false){
+	        		EncodingConverterException e = new EncodingConverterException("Ivalid encoding format"); throw e; 
+	        	}
+	        	Charset chSetFrom = Charset.forName(from);
+	        	Charset chSetTo = Charset.forName(to);
 
-	        String string = new String (buffer, chSetTo);
-	        
-	        outStream.write(string.getBytes(chSetFrom));
-	        outStream.close();
+	        	String string = new String (buffer, chSetTo);
+	        	
+	        	outStream.write(string.getBytes(chSetFrom));
+	        	outStream.close();
+	    	} catch(IOException err){
+	    		System.out.println(err.getMessage());
+	    	}
 	    }
 }
