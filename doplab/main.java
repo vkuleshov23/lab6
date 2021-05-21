@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 public class main{
 	public static void main(String[] args){
 
-		String inf = "secret information";
+		String inf = "new data for tests";
 		byte item = (byte)' ';
 		byte[] data = {(byte)'0', (byte)49, (byte)50, (byte)'3'};	
 		short key = (short)((Math.random() * 1000) + (int)(Math.random()* 9) + 11);
