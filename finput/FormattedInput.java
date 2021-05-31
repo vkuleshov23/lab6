@@ -207,7 +207,7 @@ public class FormattedInput{
 			return item;
 		}
 	}
-	private static final Object[] tryScanf(String format){
+	private synchronized static final Object[] tryScanf(String format){
 		format = format.trim();
 		Format take = new Format(format);
 		Object[] result = new Object[take.formatsCounter()];
@@ -226,7 +226,7 @@ public class FormattedInput{
 		return result;
 	}
 
-	private static final Object[] trySScanf(String format, String in){
+	private synchronized static final Object[] trySScanf(String format, String in){
 		format = format.trim();
 		in = in.trim();
 		
@@ -247,7 +247,7 @@ public class FormattedInput{
 		} 
 		return result;
 	}
-	public static final Object[] scanf(String format){
+	public synchronized static final Object[] scanf(String format){
 		Object[] result;
 		do {
 			if(ERR_FLAG != ERROR)
@@ -260,7 +260,7 @@ public class FormattedInput{
 		} while(ERR_FLAG == ERROR);
 		return result;
 	}
-	public static final Object[] sscanf(String format, String in){
+	public synchronized static final Object[] sscanf(String format, String in){
 		Object[] result;
 		ERR_FLAG = !ERROR;
 		result =  trySScanf(format, in);			
